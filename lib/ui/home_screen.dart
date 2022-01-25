@@ -1,8 +1,36 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class HomeScreen extends StatelessWidget {
+import 'package:clean_architecture/model/photo.dart';
+import 'package:clean_architecture/ui/widget/photo_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _controller = TextEditingController();
+  List<Photo> _photos = [];
+
+  Future<List<Photo>> fetch(String query) async {
+    final response = await http.get(
+      Uri.parse(
+          'https://pixabay.com/api/?key=24806198-1f9550a3fd92fcce8b0067dc7&q=$query&image_type=photo&pretty=true'),
+    );
+    Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+    Iterable hits = jsonResponse['hits'];
+    return hits.map((e) => Photo.fromJson(e)).toList();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +47,22 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controller,
               decoration: InputDecoration(
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(10),
                   ),
                 ),
                 suffixIcon: IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final photos = await fetch(_controller.text);
+                    setState(() {
+                      _photos = photos;
+                    });
+                  },
                   icon: const Icon(Icons.search),
                 ),
               ),
@@ -37,23 +71,15 @@ class HomeScreen extends StatelessWidget {
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.all(16.0),
-              itemCount: 10,
+              itemCount: _photos.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
               itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16.0),
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://cdn.pixabay.com/photo/2014/02/01/17/28/apple-256261_150.jpg'),
-                    ),
-                  ),
-                );
+                final photo = _photos[index];
+                return PhotoWidget(photo: photo);
               },
             ),
           )
