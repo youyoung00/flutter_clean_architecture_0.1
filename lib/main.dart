@@ -3,7 +3,7 @@ import 'package:clean_architecture/ui/home_screen.dart';
 import 'package:clean_architecture/ui/home_view_model.dart';
 import 'package:flutter/material.dart';
 
-import 'data/api.dart';
+import 'data/pixabay_api.dart';
 
 void main() {
   runApp(const MyApp());

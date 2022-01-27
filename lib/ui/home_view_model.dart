@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:clean_architecture/data/api.dart';
+import 'package:clean_architecture/data/photo_api_repository.dart';
 import 'package:clean_architecture/model/photo.dart';
 
 class HomeViewModel {
-  final PixabayApi api;
+  final PhotoApiRepository api;
 
   HomeViewModel(this.api);
 
