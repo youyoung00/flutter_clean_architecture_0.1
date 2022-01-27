@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final photoProvider = PhotoProvider.of(context);
+    final photoProvider = PhotoProvider.of(context).viewModel;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
