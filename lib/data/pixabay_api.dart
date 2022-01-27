@@ -5,12 +5,14 @@ import 'package:clean_architecture/model/photo.dart';
 import 'package:http/http.dart' as http;
 
 class PixabayApi implements PhotoApiRepository {
-  final baseUrl = 'https://pixabay.com/api/';
-  final key = '24806198-1f9550a3fd92fcce8b0067dc7';
+  static const baseUrl = 'https://pixabay.com/api/';
+  static const key = '24806198-1f9550a3fd92fcce8b0067dc7';
 
   @override
-  Future<List<Photo>> fetch(String query) async {
-    final response = await http.get(
+  Future<List<Photo>> fetch(String query, {http.Client? client}) async {
+    client ??= http.Client();
+
+    final response = await client.get(
       Uri.parse('$baseUrl?key=$key&q=$query&image_type=photo&pretty=true'),
     );
     Map<String, dynamic> jsonResponse = jsonDecode(response.body);
