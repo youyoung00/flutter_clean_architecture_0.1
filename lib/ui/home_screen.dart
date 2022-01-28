@@ -25,7 +25,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final photoProvider = Provider.of<HomeViewModel>(context);
     final viewModel = context.watch<HomeViewModel>();
 
     return Scaffold(
