@@ -10,6 +10,9 @@ void main() {
     await viewModel.fetch('apple');
     await viewModel.fetch('iphone');
     final result = fakeJson.map((e) => Photo.fromJson(e)).toList();
+
+    // Photo(id: 1, tags: '', previewURL: '')
+
     expect(
       viewModel.photoStream,
       emitsInOrder([
