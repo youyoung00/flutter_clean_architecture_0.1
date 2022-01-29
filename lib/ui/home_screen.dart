@@ -1,4 +1,3 @@
-import 'package:clean_architecture/model/photo.dart';
 import 'package:clean_architecture/ui/widget/photo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -52,41 +51,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 suffixIcon: IconButton(
                   onPressed: () async {
                     viewModel.fetch(_controller.text);
-                    // final photos =
-                    //     await photoProvider.api.fetch(_controller.text);
-                    // setState(() {
-                    //   _photos = photos;
-                    // });
                   },
                   icon: const Icon(Icons.search),
                 ),
               ),
             ),
           ),
-          StreamBuilder<List<Photo>>(
-              stream: viewModel.photoStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const CircularProgressIndicator();
-                }
-                final photos = snapshot.data!;
-                return Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(16.0),
-                    itemCount: photos.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                    ),
-                    itemBuilder: (context, index) {
-                      final photo = photos[index];
-                      return PhotoWidget(photo: photo);
-                    },
-                  ),
-                );
-              })
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(16.0),
+              itemCount: viewModel.photos.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemBuilder: (context, index) {
+                final photo = viewModel.photos[index];
+                return PhotoWidget(photo: photo);
+              },
+            ),
+          )
         ],
       ),
     );

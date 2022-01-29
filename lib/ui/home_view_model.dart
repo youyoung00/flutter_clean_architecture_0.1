@@ -2,17 +2,21 @@ import 'dart:async';
 
 import 'package:clean_architecture/data/photo_api_repository.dart';
 import 'package:clean_architecture/model/photo.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class HomeViewModel {
+class HomeViewModel with ChangeNotifier {
   final PhotoApiRepository api;
+
+  List<Photo> _photos = [];
+
+  UnmodifiableListView<Photo> get photos => UnmodifiableListView(_photos);
 
   HomeViewModel(this.api);
 
-  final _photoStreamController = StreamController<List<Photo>>()..add([]);
-  Stream<List<Photo>> get photoStream => _photoStreamController.stream;
-
   Future<void> fetch(String query) async {
     final result = await api.fetch(query);
-    _photoStreamController.add(result);
+    _photos = result;
+    notifyListeners();
   }
 }
