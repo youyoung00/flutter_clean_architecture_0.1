@@ -1,4 +1,5 @@
-import 'package:clean_architecture/data/pixabay_api.dart';
+import 'package:clean_architecture/data/data_source/pixabay_api.dart';
+import 'package:clean_architecture/data/repository/photo_api_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
@@ -9,15 +10,14 @@ import 'pixabay_api_test.mocks.dart';
 @GenerateMocks([http.Client])
 void main() {
   test('MUST GET PIXABAYAPI DATA', () async {
-    final api = PixabayApi();
-
     final client = MockClient();
+    final api = PhotoApiRepositoryImpl(PixabayApi(client));
 
     when(client.get(Uri.parse(
             '${PixabayApi.baseUrl}?key=${PixabayApi.key}&q=iphone&image_type=photo&pretty=true')))
         .thenAnswer((_) async => http.Response(fakeJsonBody, 200));
 
-    final result = await api.fetch('iphone', client: client);
+    final result = await api.fetch('iphone');
 
     expect(result.first.id, 620817);
 

@@ -1,4 +1,4 @@
-import 'package:clean_architecture/ui/widget/photo_widget.dart';
+import 'package:clean_architecture/presentation/home/components/photo_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

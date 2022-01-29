@@ -47,5 +47,6 @@ app.*.map.json
 
 .idea/
 *.g.dart
-*.mocks.dart
 *.freezed.dart
+*.mocks.dart
+
