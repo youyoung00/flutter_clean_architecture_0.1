@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 class HomeViewModel with ChangeNotifier {
   final PhotoApiRepository repository;
 
-  final HomeState _state = HomeState([], false);
+  HomeState _state = HomeState([], false);
 
   HomeState get state => _state;
 
@@ -21,20 +21,20 @@ class HomeViewModel with ChangeNotifier {
   HomeViewModel(this.repository);
 
   Future<void> fetch(String query) async {
-    _state.copy(isLoading: true);
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
     final Result<List<Photo>> result = await repository.fetch(query);
 
     result.when(
       success: (photos) {
-        _state.copy(photos: photos);
+        _state = state.copyWith(photos: photos);
         notifyListeners();
       },
       error: (message) {
         _eventController.add(HomeUiEvent.showSnackBar(message));
       },
     );
-    _state.copy(isLoading: false);
+    _state = state.copyWith(isLoading: false);
     notifyListeners();
   }
 }
