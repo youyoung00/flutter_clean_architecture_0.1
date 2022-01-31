@@ -46,56 +46,55 @@ class _HomeScreenState extends State<HomeScreen> {
     final viewModel = context.watch<HomeViewModel>();
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        title: const Text(
-          "이미지 검색 앱",
-          style: TextStyle(color: Colors.black),
+        appBar: AppBar(
+          centerTitle: true,
+          backgroundColor: Colors.white,
+          title: const Text(
+            "이미지 검색 앱",
+            style: TextStyle(color: Colors.black),
+          ),
+          elevation: 0,
         ),
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
-              controller: _controller,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
                   ),
-                ),
-                suffixIcon: IconButton(
-                  onPressed: () async {
-                    viewModel.fetch(_controller.text);
-                  },
-                  icon: const Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      viewModel.fetch(_controller.text);
+                    },
+                    icon: const Icon(Icons.search),
+                  ),
                 ),
               ),
             ),
-          ),
-          viewModel.isLoading
-              ? const CircularProgressIndicator()
-              : Expanded(
-                  child: GridView.builder(
-                    padding: const EdgeInsets.all(16.0),
-                    itemCount: viewModel.photos.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
+            viewModel.isLoading
+                ? const CircularProgressIndicator()
+                : Expanded(
+                    child: GridView.builder(
+                      padding: const EdgeInsets.all(16.0),
+                      itemCount: viewModel.photos.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                      ),
+                      itemBuilder: (context, index) {
+                        final photo = viewModel.photos[index];
+                        return PhotoWidget(photo: photo);
+                      },
                     ),
-                    itemBuilder: (context, index) {
-                      final photo = viewModel.photos[index];
-                      return PhotoWidget(photo: photo);
-                    },
-                  ),
-                )
-        ],
-      ),
-    );
+                  )
+          ],
+        ));
   }
 }
