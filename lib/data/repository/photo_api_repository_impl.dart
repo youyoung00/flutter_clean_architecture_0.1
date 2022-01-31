@@ -20,7 +20,5 @@ class PhotoApiRepositoryImpl implements PhotoApiRepository {
         return Result.error(message);
       },
     );
-
-    // return result.map((e) => Photo.fromJson(e)).toList();
   }
 }
