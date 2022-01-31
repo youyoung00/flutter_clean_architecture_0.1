@@ -76,12 +76,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            viewModel.isLoading
+            viewModel.state.isLoading
                 ? const CircularProgressIndicator()
                 : Expanded(
                     child: GridView.builder(
                       padding: const EdgeInsets.all(16.0),
-                      itemCount: viewModel.photos.length,
+                      itemCount: viewModel.state.photos.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisSpacing: 16,
                       ),
                       itemBuilder: (context, index) {
-                        final photo = viewModel.photos[index];
+                        final photo = viewModel.state.photos[index];
                         return PhotoWidget(photo: photo);
                       },
                     ),

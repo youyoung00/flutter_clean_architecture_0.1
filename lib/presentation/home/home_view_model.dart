@@ -1,22 +1,18 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:clean_architecture/data/data_source/result.dart';
 import 'package:clean_architecture/domain/model/photo.dart';
 import 'package:clean_architecture/domain/repository/photo_api_repository.dart';
+import 'package:clean_architecture/presentation/home/home_state.dart';
 import 'package:clean_architecture/presentation/home/home_ui_event.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomeViewModel with ChangeNotifier {
   final PhotoApiRepository repository;
 
-  List<Photo> _photos = [];
+  final HomeState _state = HomeState([], false);
 
-  UnmodifiableListView<Photo> get photos => UnmodifiableListView(_photos);
-
-  bool _isLoading = false;
-
-  bool get isLoading => _isLoading;
+  HomeState get state => _state;
 
   final _eventController = StreamController<HomeUiEvent>();
 
@@ -25,20 +21,20 @@ class HomeViewModel with ChangeNotifier {
   HomeViewModel(this.repository);
 
   Future<void> fetch(String query) async {
-    _isLoading = true;
+    _state.isLoading = true;
     notifyListeners();
     final Result<List<Photo>> result = await repository.fetch(query);
 
     result.when(
       success: (photos) {
-        _photos = photos;
+        _state.photos = photos;
         notifyListeners();
       },
       error: (message) {
         _eventController.add(HomeUiEvent.showSnackBar(message));
       },
     );
-    _isLoading = false;
+    _state.isLoading = false;
     notifyListeners();
   }
 }
