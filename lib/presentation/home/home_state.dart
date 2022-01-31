@@ -1,8 +1,18 @@
 import 'package:clean_architecture/domain/model/photo.dart';
 
 class HomeState {
-  List<Photo> photos;
-  bool isLoading;
+  final List<Photo> photos;
+  final bool isLoading;
 
   HomeState(this.photos, this.isLoading);
+
+  HomeState copy({
+    List<Photo>? photos,
+    bool? isLoading,
+  }) {
+    return HomeState(
+      photos ??= this.photos,
+      isLoading ??= this.isLoading,
+    );
+  }
 }
