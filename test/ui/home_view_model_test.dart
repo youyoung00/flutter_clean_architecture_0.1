@@ -1,12 +1,13 @@
 import 'package:clean_architecture/data/data_source/result.dart';
 import 'package:clean_architecture/domain/model/photo.dart';
 import 'package:clean_architecture/domain/repository/photo_api_repository.dart';
+import 'package:clean_architecture/domain/use_case/get_photos_use_case.dart';
 import 'package:clean_architecture/presentation/home/home_view_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('STREAM WORKING...', () async {
-    final viewModel = HomeViewModel(FakePhotoApiRepository());
+    final viewModel = HomeViewModel(GetPhotosUseCase(FakePhotoApiRepository()));
 
     await viewModel.fetch('apple');
 
