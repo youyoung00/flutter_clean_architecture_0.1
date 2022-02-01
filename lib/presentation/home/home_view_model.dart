@@ -8,7 +8,6 @@ import 'package:clean_architecture/presentation/home/home_ui_event.dart';
 import 'package:flutter/cupertino.dart';
 
 class HomeViewModel with ChangeNotifier {
-  // final PhotoApiRepository repository;
   final GetPhotosUseCase getPhotosUseCase;
 
   HomeState _state = HomeState([], false);
